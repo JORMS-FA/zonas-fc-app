@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zonas FC PRO</title>
+<title>ZONAS FC PRO</title>
 <link rel="manifest" href="manifest.json">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
 :root{
@@ -15,166 +16,38 @@
 --orange:#f97316;
 --red:#ef4444;
 }
-
 *{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:#000;
-color:#e2e8f0;
-}
-
-.container{
-max-width:420px;
-margin:auto;
-padding:16px;
-}
-
-.card{
-background:#0f172a;
-padding:18px;
-border-radius:20px;
-box-shadow:0 0 30px rgba(56,189,248,0.08);
-}
-
-h1{text-align:center;color:var(--blue);margin:6px 0 10px}
-
-.input-wrap{width:100%;}
-
-input{
-width:100%;
-padding:14px;
-font-size:18px;
-border-radius:14px;
-border:none;
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#000;color:#e2e8f0}
+.container{max-width:420px;margin:auto;padding:16px}
+.card{background:#0f172a;padding:18px;border-radius:20px;box-shadow:0 0 30px rgba(56,189,248,0.08);animation:fadeIn .4s ease}
+h1{
 text-align:center;
-margin-top:10px;
-display:block;
-}
-
-.actions{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
-flex-wrap:wrap;
-}
-
-button{
-padding:12px 14px;
-border:none;
-border-radius:14px;
-font-weight:bold;
-font-size:14px;
-cursor:pointer;
-color:#000;
-}
-
-.btn{
+margin:6px 0 10px;
 background:linear-gradient(90deg,var(--blue),var(--green));
+-webkit-background-clip:text;
+color:transparent;
 }
-
-.table{
-width:100%;
-margin-top:12px;
-border-collapse:collapse;
-}
-
-.table td,.table th{
-padding:12px;
-border-bottom:1px solid #1e293b;
-text-align:center;
-}
-
-/* Barra Garmin con rangos */
-.bar{
-display:flex;
-height:38px;
-margin-top:16px;
-border-radius:14px;
-overflow:hidden;
-}
-
-.segment{
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:11px;
-font-weight:bold;
-color:#000;
-text-align:center;
-padding:0 4px;
-}
-
-.popup{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.9);
-justify-content:center;
-align-items:center;
-}
-
-.popup-content{
-background:#0f172a;
-padding:20px;
-border-radius:20px;
-width:92%;
-max-width:420px;
-}
-
-.hist{
-margin-top:18px;
-}
-
-.empty{
-opacity:.7;
-text-align:center;
-padding:10px 0;
-}
-
-.item{
-background:#1e293b;
-padding:12px;
-border-radius:12px;
-margin-top:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:8px;
-}
-
-.item-left{
-font-size:14px;
-}
-
-.item-actions{
-display:flex;
-gap:6px;
-}
-
-.small-btn{
-padding:8px 10px;
-border-radius:10px;
-font-size:12px;
-}
-
-.diagram{
-display:flex;
-height:20px;
-border-radius:10px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.section{
-margin-top:26px;
-font-size:14px;
-}
+input{width:100%;padding:14px;font-size:18px;border-radius:14px;border:none;text-align:center;margin-top:10px}
+.actions{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+button{padding:12px 14px;border:none;border-radius:14px;font-weight:bold;font-size:14px;cursor:pointer;color:#000;transition:.2s}
+button:hover{transform:scale(1.05)}
+.btn{background:linear-gradient(90deg,var(--blue),var(--green))}
+.table{width:100%;margin-top:12px;border-collapse:collapse}
+.table td,.table th{padding:12px;border-bottom:1px solid #1e293b;text-align:center}
+.bar{display:flex;height:38px;margin-top:16px;border-radius:14px;overflow:hidden}
+.segment{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#000;padding:0 4px}
+.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center}
+.popup-content{background:#0f172a;padding:20px;border-radius:20px;width:92%;max-width:420px;animation:scaleIn .3s ease}
+.hist{margin-top:18px}
+.empty{opacity:.7;text-align:center;padding:10px 0}
+.item{background:#1e293b;padding:12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+.item-actions{display:flex;gap:6px}
+.small-btn{padding:8px 10px;border-radius:10px;font-size:12px}
+.menu-popup{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0f172a;padding:10px;border-radius:12px;display:none}
+.section{margin-top:30px;font-size:14px}
+.diagram{display:flex;height:20px;border-radius:10px;overflow:hidden;margin-top:10px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
 </head>
 
@@ -182,13 +55,9 @@ font-size:14px;
 
 <div class="container">
 <div class="card">
-
-<h1>Zonas FC</h1>
-
-<div class="input-wrap">
+<h1>ZONAS FC PRO</h1>
+<p style="font-size:13px;text-align:center">Basado en umbral de lactato (LTHR). Más preciso que % FC máx porque refleja tu fisiología real.</p>
 <input type="number" id="lt" placeholder="Ingresa tu umbral" oninput="calc()">
-</div>
-
 <div class="actions">
 <button class="btn" onclick="guardar()">Guardar</button>
 <button class="btn" onclick="mostrarActual()">Ver</button>
@@ -204,14 +73,13 @@ font-size:14px;
 </table>
 
 <div class="bar" id="bar"></div>
-
 </div>
 
 <div class="hist" id="historial"></div>
 
 <div class="section">
 <h3>VT1 (Umbral aeróbico)</h3>
-<p>Inicio de acumulación leve de lactato. Respiración controlada. Base aeróbica eficiente (Z1–Z2).</p>
+<p>Marca el punto donde el lactato empieza a elevarse levemente. Predomina el metabolismo aeróbico (Z1–Z2).</p>
 <div class="diagram">
 <div style="background:var(--green);width:45%"></div>
 <div style="background:var(--lgreen);width:20%"></div>
@@ -222,7 +90,7 @@ font-size:14px;
 
 <div class="section">
 <h3>VT2 (Umbral anaeróbico)</h3>
-<p>Límite máximo sostenible. Alta acumulación de lactato (Z4–Z5).</p>
+<p>Punto máximo sostenible. A partir de aquí el lactato se acumula rápidamente (Z4–Z5).</p>
 <div class="diagram">
 <div style="background:var(--green);width:25%"></div>
 <div style="background:var(--yellow);width:20%"></div>
@@ -234,12 +102,18 @@ font-size:14px;
 </div>
 
 <div class="popup" id="popup">
-<div class="popup-content">
+<div class="popup-content" id="capture">
 <h2>Mis zonas</h2>
 <div id="tablaPopup"></div>
-<div class="actions"><button class="btn" onclick="cerrar()">Cerrar</button></div>
+<div id="barPopup" class="bar"></div>
+<div class="actions">
+<button class="btn" onclick="descargar()">Descargar</button>
+<button class="btn" onclick="cerrar()">Cerrar</button>
 </div>
 </div>
+</div>
+
+<div id="menu" class="menu-popup"></div>
 
 <script>
 function getZonas(lt){
@@ -250,18 +124,9 @@ let z4=Math.round(lt*0.99);
 return {z1,z2,z3,z4,lt};
 }
 
-function calc(){
-let lt=parseInt(document.getElementById("lt").value);
-if(!lt) return;
+function renderBar(lt,id){
 let {z1,z2,z3,z4}=getZonas(lt);
-
-z1e.textContent="< "+z1;
-z2e.textContent=z1+" - "+z2;
-z3e.textContent=z2+" - "+z3;
-z4e.textContent=z3+" - "+z4;
-z5e.textContent="≥ "+lt;
-
-bar.innerHTML=`
+document.getElementById(id).innerHTML=`
 <div class="segment" style="background:#22c55e;width:20%">< ${z1}</div>
 <div class="segment" style="background:#84cc16;width:20%">${z1}-${z2}</div>
 <div class="segment" style="background:#eab308;width:20%">${z2}-${z3}</div>
@@ -269,9 +134,21 @@ bar.innerHTML=`
 <div class="segment" style="background:#ef4444;width:20%">≥ ${lt}</div>`;
 }
 
+function calc(){
+let lt=parseInt(document.getElementById("lt").value);
+if(!lt)return;
+let {z1,z2,z3,z4}=getZonas(lt);
+z1e.textContent="< "+z1;
+z2e.textContent=z1+" - "+z2;
+z3e.textContent=z2+" - "+z3;
+z4e.textContent=z3+" - "+z4;
+z5e.textContent="≥ "+lt;
+renderBar(lt,"bar");
+}
+
 function guardar(){
 let lt=parseInt(document.getElementById("lt").value);
-if(!lt) return;
+if(!lt)return;
 let data=JSON.parse(localStorage.getItem("zonas"))||[];
 data.unshift({lt,fecha:new Date().toLocaleString()});
 localStorage.setItem("zonas",JSON.stringify(data));
@@ -287,26 +164,34 @@ return;
 let html="";
 data.forEach((d,i)=>{
 html+=`<div class="item">
-<div class="item-left">${d.lt} bpm<br><small>${d.fecha}</small></div>
+<div>${d.lt} bpm<br><small>${d.fecha}</small></div>
 <div class="item-actions">
 <button class="small-btn btn" onclick="verItem(${i})">Ver</button>
-<button class="small-btn" onclick="eliminar(${i})">⋮</button>
+<button class="small-btn" onclick="menuAcciones(${i})">⋮</button>
 </div>
 </div>`;
 });
 historial.innerHTML=html;
 }
 
+function menuAcciones(i){
+menu.innerHTML=`
+<button onclick="eliminar(${i})">Eliminar</button>
+<button onclick="cerrarMenu()">Cancelar</button>`;
+menu.style.display="block";
+}
+function cerrarMenu(){menu.style.display="none";}
+
 function eliminar(i){
 let data=JSON.parse(localStorage.getItem("zonas"))||[];
 data.splice(i,1);
 localStorage.setItem("zonas",JSON.stringify(data));
 cargar();
+cerrarMenu();
 }
 
 function renderPopup(lt){
 let {z1,z2,z3,z4}=getZonas(lt);
-
 tablaPopup.innerHTML=`
 <table class="table">
 <tr style="color:#22c55e"><td>Z1</td><td>< ${z1}</td></tr>
@@ -315,21 +200,30 @@ tablaPopup.innerHTML=`
 <tr style="color:#f97316"><td>Z4</td><td>${z3}-${z4}</td></tr>
 <tr style="color:#ef4444"><td>Z5</td><td>≥ ${lt}</td></tr>
 </table>`;
-
+renderBar(lt,"barPopup");
 popup.style.display="flex";
 }
 
 function mostrarActual(){
 let lt=parseInt(document.getElementById("lt").value);
-if(!lt) return;
+if(!lt)return;
 renderPopup(lt);
 }
 
 function verItem(i){
 let data=JSON.parse(localStorage.getItem("zonas"))||[];
 let item=data[i];
-if(!item) return;
+if(!item)return;
 renderPopup(parseInt(item.lt));
+}
+
+function descargar(){
+html2canvas(document.getElementById("capture")).then(canvas=>{
+let link=document.createElement("a");
+link.download="zonas.png";
+link.href=canvas.toDataURL();
+link.click();
+});
 }
 
 function cerrar(){popup.style.display="none";}
@@ -342,7 +236,8 @@ z5e=document.getElementById("z5"),
 bar=document.getElementById("bar"),
 historial=document.getElementById("historial"),
 tablaPopup=document.getElementById("tablaPopup"),
-popup=document.getElementById("popup");
+popup=document.getElementById("popup"),
+menu=document.getElementById("menu");
 
 cargar();
 </script>
