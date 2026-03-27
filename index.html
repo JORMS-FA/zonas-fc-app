@@ -3,138 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Zonas FC PRO</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
-body {
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#000000;
-  color:#e2e8f0;
-  text-align:center;
+:root{
+--blue:#38bdf8;
+--green:#22c55e;
+--lgreen:#84cc16;
+--yellow:#eab308;
+--orange:#f97316;
+--red:#ef4444;
 }
 
-.container {
-  max-width:420px;
-  margin:auto;
-  padding:20px;
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:#000;
+color:#e2e8f0;
 }
 
-.card {
-  background:#0f172a;
-  padding:20px;
-  border-radius:20px;
-  box-shadow:0 0 20px rgba(56,189,248,0.1);
+.container{
+max-width:420px;
+margin:auto;
+padding:16px;
 }
 
-h1 {
-  color:#38bdf8;
+.card{
+background:#0f172a;
+padding:18px;
+border-radius:20px;
+box-shadow:0 0 30px rgba(56,189,248,0.08);
 }
 
-input {
-  width:100%;
-  padding:14px;
-  margin-top:15px;
-  font-size:20px;
-  border-radius:12px;
-  border:none;
-  text-align:center;
+h1{text-align:center;color:var(--blue);margin:6px 0 10px}
+
+.input-wrap{width:100%;}
+
+input{
+width:100%;
+padding:14px;
+font-size:18px;
+border-radius:14px;
+border:none;
+text-align:center;
+margin-top:10px;
+display:block;
 }
 
-button {
-  margin:10px 5px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(90deg,#38bdf8,#22c55e);
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
+.actions{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+flex-wrap:wrap;
 }
 
-table {
-  width:100%;
-  margin-top:20px;
+button{
+padding:12px 14px;
+border:none;
+border-radius:14px;
+font-weight:bold;
+font-size:14px;
+cursor:pointer;
+color:#000;
 }
 
-td, th {
-  padding:12px;
-  border-bottom:1px solid #1e293b;
+.btn{
+background:linear-gradient(90deg,var(--blue),var(--green));
 }
 
-/* Barra tipo Garmin */
-.bar {
-  display:flex;
-  height:30px;
-  margin-top:20px;
-  border-radius:12px;
-  overflow:hidden;
+.table{
+width:100%;
+margin-top:12px;
+border-collapse:collapse;
 }
 
-.bar div {
-  height:100%;
+.table td,.table th{
+padding:12px;
+border-bottom:1px solid #1e293b;
+text-align:center;
 }
 
-/* Popup */
-#popup {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  justify-content:center;
-  align-items:center;
+/* Barra Garmin con rangos */
+.bar{
+display:flex;
+height:38px;
+margin-top:16px;
+border-radius:14px;
+overflow:hidden;
 }
 
-.popup-content {
-  background:#0f172a;
-  padding:20px;
-  border-radius:20px;
-  width:85%;
+.segment{
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:bold;
+color:#000;
+text-align:center;
+padding:0 4px;
 }
 
-/* Secciones */
-.section {
-  margin-top:40px;
-  text-align:left;
+.popup{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+justify-content:center;
+align-items:center;
 }
 
-/* Diagramas */
-.diagram {
-  margin-top:10px;
-  height:20px;
-  display:flex;
-  border-radius:10px;
-  overflow:hidden;
+.popup-content{
+background:#0f172a;
+padding:20px;
+border-radius:20px;
+width:92%;
+max-width:420px;
 }
 
-.diagram div {
-  height:100%;
+.hist{
+margin-top:18px;
+}
+
+.empty{
+opacity:.7;
+text-align:center;
+padding:10px 0;
+}
+
+.item{
+background:#1e293b;
+padding:12px;
+border-radius:12px;
+margin-top:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:8px;
+}
+
+.item-left{
+font-size:14px;
+}
+
+.item-actions{
+display:flex;
+gap:6px;
+}
+
+.small-btn{
+padding:8px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.diagram{
+display:flex;
+height:20px;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.section{
+margin-top:26px;
+font-size:14px;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
-
 <div class="card">
 
-<h1>Zonas FC PRO</h1>
-<p>Basado en umbral (LTHR)</p>
+<h1>Zonas FC</h1>
 
+<div class="input-wrap">
 <input type="number" id="lt" placeholder="Ingresa tu umbral" oninput="calc()">
+</div>
 
-<button onclick="guardar()">Guardar</button>
-<button onclick="mostrar()">Ver mis zonas</button>
+<div class="actions">
+<button class="btn" onclick="guardar()">Guardar</button>
+<button class="btn" onclick="mostrarActual()">Ver</button>
+</div>
 
-<table>
-<tr><th>Zona</th><th>Rango</th></tr>
+<table class="table">
+<tr><th>Zona</th><th>ppm</th></tr>
 <tr><td>Z1</td><td id="z1"></td></tr>
 <tr><td>Z2</td><td id="z2"></td></tr>
 <tr><td>Z3</td><td id="z3"></td></tr>
@@ -142,110 +203,148 @@ td, th {
 <tr><td>Z5</td><td id="z5"></td></tr>
 </table>
 
-<div class="bar">
-  <div style="background:#22c55e;width:20%"></div>
-  <div style="background:#84cc16;width:20%"></div>
-  <div style="background:#eab308;width:20%"></div>
-  <div style="background:#f97316;width:20%"></div>
-  <div style="background:#ef4444;width:20%"></div>
-</div>
+<div class="bar" id="bar"></div>
 
 </div>
 
-<!-- VT1 -->
+<div class="hist" id="historial"></div>
+
 <div class="section">
-<h2>Primer umbral ventilatorio (VT1)</h2>
-
-<p>
-El VT1 representa el punto donde el cuerpo empieza a acumular lactato
-de forma leve. Aquí la respiración aumenta pero sigue controlada.
-</p>
-
+<h3>VT1 (Umbral aeróbico)</h3>
+<p>Inicio de acumulación leve de lactato. Respiración controlada. Base aeróbica eficiente (Z1–Z2).</p>
 <div class="diagram">
-  <div style="background:#22c55e;width:40%"></div>
-  <div style="background:#eab308;width:20%"></div>
-  <div style="background:#ef4444;width:40%"></div>
+<div style="background:var(--green);width:45%"></div>
+<div style="background:var(--lgreen);width:20%"></div>
+<div style="background:var(--yellow);width:15%"></div>
+<div style="background:var(--red);width:20%"></div>
+</div>
 </div>
 
-<p style="font-size:14px;">Zona aeróbica eficiente (Z1–Z2)</p>
-</div>
-
-<!-- VT2 -->
 <div class="section">
-<h2>Segundo umbral ventilatorio (VT2)</h2>
-
-<p>
-El VT2 marca el límite máximo sostenible. A partir de aquí el lactato
-se acumula rápidamente y solo puedes sostener el esfuerzo por poco tiempo.
-</p>
-
+<h3>VT2 (Umbral anaeróbico)</h3>
+<p>Límite máximo sostenible. Alta acumulación de lactato (Z4–Z5).</p>
 <div class="diagram">
-  <div style="background:#22c55e;width:30%"></div>
-  <div style="background:#f97316;width:30%"></div>
-  <div style="background:#ef4444;width:40%"></div>
+<div style="background:var(--green);width:25%"></div>
+<div style="background:var(--yellow);width:20%"></div>
+<div style="background:var(--orange);width:25%"></div>
+<div style="background:var(--red);width:30%"></div>
+</div>
 </div>
 
-<p style="font-size:14px;">Zona de alto rendimiento (Z4–Z5)</p>
 </div>
 
+<div class="popup" id="popup">
+<div class="popup-content">
+<h2>Mis zonas</h2>
+<div id="tablaPopup"></div>
+<div class="actions"><button class="btn" onclick="cerrar()">Cerrar</button></div>
 </div>
-
-<!-- POPUP -->
-<div id="popup">
-  <div class="popup-content">
-    <h2>Mis zonas</h2>
-    <div id="zonasGuardadas"></div>
-    <button onclick="cerrar()">Cerrar</button>
-  </div>
 </div>
 
 <script>
-function calc(){
-let lt=document.getElementById("lt").value;
-if(!lt)return;
+function getZonas(lt){
+let z1=Math.round(lt*0.75);
+let z2=Math.round(lt*0.85);
+let z3=Math.round(lt*0.92);
+let z4=Math.round(lt*0.99);
+return {z1,z2,z3,z4,lt};
+}
 
-document.getElementById("z1").innerText="< "+Math.round(lt*0.75);
-document.getElementById("z2").innerText=Math.round(lt*0.75)+"-"+Math.round(lt*0.85);
-document.getElementById("z3").innerText=Math.round(lt*0.85)+"-"+Math.round(lt*0.92);
-document.getElementById("z4").innerText=Math.round(lt*0.92)+"-"+Math.round(lt*0.99);
-document.getElementById("z5").innerText="≥ "+Math.round(lt);
+function calc(){
+let lt=parseInt(document.getElementById("lt").value);
+if(!lt) return;
+let {z1,z2,z3,z4}=getZonas(lt);
+
+z1e.textContent="< "+z1;
+z2e.textContent=z1+" - "+z2;
+z3e.textContent=z2+" - "+z3;
+z4e.textContent=z3+" - "+z4;
+z5e.textContent="≥ "+lt;
+
+bar.innerHTML=`
+<div class="segment" style="background:#22c55e;width:20%">< ${z1}</div>
+<div class="segment" style="background:#84cc16;width:20%">${z1}-${z2}</div>
+<div class="segment" style="background:#eab308;width:20%">${z2}-${z3}</div>
+<div class="segment" style="background:#f97316;width:20%">${z3}-${z4}</div>
+<div class="segment" style="background:#ef4444;width:20%">≥ ${lt}</div>`;
 }
 
 function guardar(){
-let lt=document.getElementById("lt").value;
-if(!lt)return;
-
-localStorage.setItem("umbral", lt);
-alert("Guardado ✅");
+let lt=parseInt(document.getElementById("lt").value);
+if(!lt) return;
+let data=JSON.parse(localStorage.getItem("zonas"))||[];
+data.unshift({lt,fecha:new Date().toLocaleString()});
+localStorage.setItem("zonas",JSON.stringify(data));
+cargar();
 }
 
-function mostrar(){
-let lt=localStorage.getItem("umbral");
-
-if(!lt){
-alert("No has guardado zonas");
+function cargar(){
+let data=JSON.parse(localStorage.getItem("zonas"))||[];
+if(data.length===0){
+historial.innerHTML='<div class="empty">Aún no has guardado zonas</div>';
 return;
 }
-
-let html=`
-<p>Z1: < ${Math.round(lt*0.75)}</p>
-<p>Z2: ${Math.round(lt*0.75)} - ${Math.round(lt*0.85)}</p>
-<p>Z3: ${Math.round(lt*0.85)} - ${Math.round(lt*0.92)}</p>
-<p>Z4: ${Math.round(lt*0.92)} - ${Math.round(lt*0.99)}</p>
-<p>Z5: ≥ ${Math.round(lt)}</p>
-`;
-
-document.getElementById("zonasGuardadas").innerHTML=html;
-document.getElementById("popup").style.display="flex";
+let html="";
+data.forEach((d,i)=>{
+html+=`<div class="item">
+<div class="item-left">${d.lt} bpm<br><small>${d.fecha}</small></div>
+<div class="item-actions">
+<button class="small-btn btn" onclick="verItem(${i})">Ver</button>
+<button class="small-btn" onclick="eliminar(${i})">⋮</button>
+</div>
+</div>`;
+});
+historial.innerHTML=html;
 }
 
-function cerrar(){
-document.getElementById("popup").style.display="none";
+function eliminar(i){
+let data=JSON.parse(localStorage.getItem("zonas"))||[];
+data.splice(i,1);
+localStorage.setItem("zonas",JSON.stringify(data));
+cargar();
 }
 
-if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('service-worker.js');
+function renderPopup(lt){
+let {z1,z2,z3,z4}=getZonas(lt);
+
+tablaPopup.innerHTML=`
+<table class="table">
+<tr style="color:#22c55e"><td>Z1</td><td>< ${z1}</td></tr>
+<tr style="color:#84cc16"><td>Z2</td><td>${z1}-${z2}</td></tr>
+<tr style="color:#eab308"><td>Z3</td><td>${z2}-${z3}</td></tr>
+<tr style="color:#f97316"><td>Z4</td><td>${z3}-${z4}</td></tr>
+<tr style="color:#ef4444"><td>Z5</td><td>≥ ${lt}</td></tr>
+</table>`;
+
+popup.style.display="flex";
 }
+
+function mostrarActual(){
+let lt=parseInt(document.getElementById("lt").value);
+if(!lt) return;
+renderPopup(lt);
+}
+
+function verItem(i){
+let data=JSON.parse(localStorage.getItem("zonas"))||[];
+let item=data[i];
+if(!item) return;
+renderPopup(parseInt(item.lt));
+}
+
+function cerrar(){popup.style.display="none";}
+
+let z1e=document.getElementById("z1"),
+z2e=document.getElementById("z2"),
+z3e=document.getElementById("z3"),
+z4e=document.getElementById("z4"),
+z5e=document.getElementById("z5"),
+bar=document.getElementById("bar"),
+historial=document.getElementById("historial"),
+tablaPopup=document.getElementById("tablaPopup"),
+popup=document.getElementById("popup");
+
+cargar();
 </script>
 
 </body>
