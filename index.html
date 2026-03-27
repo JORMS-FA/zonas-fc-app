@@ -101,6 +101,47 @@ button:hover{transform:scale(1.05)}
 
 </div>
 
+<!-- BOTON GUIA UMBRAL -->
+<div class="container" style="padding-top:0">
+  <div class="actions">
+    <button class="btn" onclick="abrirGuia()">¿CÓMO CALCULAR MI UMBRAL DE LACTATO?</button>
+  </div>
+</div>
+
+<!-- POPUP GUIA -->
+<div class="popup" id="guia">
+  <div class="popup-content">
+    <h2>Cómo calcular tu umbral de lactato (LTHR)</h2>
+    <p style="font-size:13px;opacity:.9">
+      Método práctico validado en entrenamiento: se basa en un esfuerzo máximo controlado y medir la frecuencia cardíaca promedio en los últimos 20 minutos.
+    </p>
+
+    <h3>Protocolo paso a paso</h3>
+    <ol style="font-size:13px;line-height:1.5">
+      <li>Calienta 10–15 minutos a ritmo suave.</li>
+      <li>Inicia un esfuerzo fuerte y constante durante 30 minutos (running o ciclismo).</li>
+      <li>No salgas muy rápido: busca un ritmo que puedas sostener hasta el final.</li>
+      <li>En los últimos 20 minutos, mantén la máxima intensidad sostenible.</li>
+      <li>Calcula el promedio de tu frecuencia cardíaca en esos últimos 20 minutos.</li>
+    </ol>
+
+    <p style="font-size:13px">
+      Ese valor es tu <strong>umbral de lactato (LTHR)</strong>.
+    </p>
+
+    <h3>¿Por qué es mejor que usar FC máxima?</h3>
+    <p style="font-size:13px">
+      Porque refleja tu capacidad fisiológica real. La FC máxima es un valor genérico,
+      mientras que el umbral mide el punto donde tu cuerpo empieza a acumular lactato,
+      lo que determina tu rendimiento real.
+    </p>
+
+    <div class="actions">
+      <button class="btn" onclick="cerrarGuia()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <div class="popup" id="popup">
 <div class="popup-content" id="capture">
 <h2>Mis zonas</h2>
@@ -227,6 +268,9 @@ link.click();
 }
 
 function cerrar(){popup.style.display="none";}
+
+function abrirGuia(){document.getElementById("guia").style.display="flex";}
+function cerrarGuia(){document.getElementById("guia").style.display="none";}
 
 let z1e=document.getElementById("z1"),
 z2e=document.getElementById("z2"),
