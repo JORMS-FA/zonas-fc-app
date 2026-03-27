@@ -14,53 +14,46 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background:#0f172a;
   color:#e2e8f0;
+  text-align:center;
 }
 
-/* Sidebar */
-.sidebar {
-  position:fixed;
-  width:220px;
-  height:100%;
-  background:#020617;
+.container {
+  max-width:400px;
+  margin:auto;
   padding:20px;
 }
 
-.sidebar h2 {
-  color:#38bdf8;
-}
-
-.sidebar a {
-  display:block;
-  color:#94a3b8;
-  margin:10px 0;
-  text-decoration:none;
-}
-
-/* Main */
-.main {
-  margin-left:240px;
-  padding:20px;
-}
-
-/* Card */
 .card {
   background:#1e293b;
   padding:20px;
-  border-radius:12px;
-  max-width:500px;
+  border-radius:15px;
 }
 
-/* Input */
+h1 {
+  color:#38bdf8;
+}
+
 input {
   width:100%;
   padding:12px;
   margin-top:10px;
   font-size:18px;
-  border-radius:8px;
+  border-radius:10px;
   border:none;
+  text-align:center;
 }
 
-/* Table */
+button {
+  margin:10px 5px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#38bdf8;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
 table {
   width:100%;
   margin-top:15px;
@@ -71,14 +64,38 @@ td, th {
   border-bottom:1px solid #334155;
 }
 
-/* Responsive */
-@media(max-width:768px){
-  .sidebar {
-    display:none;
-  }
-  .main {
-    margin-left:0;
-  }
+/* Barra Garmin */
+.bar {
+  display:flex;
+  height:25px;
+  margin-top:20px;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.bar div {
+  height:100%;
+}
+
+/* Popup */
+#popup {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-content {
+  background:#1e293b;
+  padding:20px;
+  border-radius:15px;
+  width:80%;
+  max-width:300px;
 }
 </style>
 
@@ -86,23 +103,17 @@ td, th {
 
 <body>
 
-<!-- MENU -->
-<div class="sidebar">
-  <h2>Zonas FC</h2>
-  <a href="#">Calculadora</a>
-  <a href="#info">¿Qué son las zonas?</a>
-  <a href="#uso">Cómo usarlas</a>
-</div>
-
-<!-- CONTENIDO -->
-<div class="main">
+<div class="container">
 
 <div class="card">
-<h1>Calculadora de Zonas</h1>
 
-<p>Basado en frecuencia cardíaca umbral (LTHR)</p>
+<h1>Zonas FC</h1>
+<p>Basado en umbral (LTHR)</p>
 
 <input type="number" id="lt" placeholder="Ingresa tu umbral" oninput="calc()">
+
+<button onclick="guardar()">Guardar</button>
+<button onclick="mostrar()">Ver mis zonas</button>
 
 <table>
 <tr><th>Zona</th><th>Rango</th></tr>
@@ -112,42 +123,26 @@ td, th {
 <tr><td>Z4</td><td id="z4"></td></tr>
 <tr><td>Z5</td><td id="z5"></td></tr>
 </table>
+
+<div class="bar">
+  <div style="background:#22c55e;width:20%"></div>
+  <div style="background:#84cc16;width:20%"></div>
+  <div style="background:#eab308;width:20%"></div>
+  <div style="background:#f97316;width:20%"></div>
+  <div style="background:#ef4444;width:20%"></div>
 </div>
-
-<!-- INFO -->
-<div id="info" style="margin-top:40px;">
-<h2>¿Por qué se calculan así las zonas?</h2>
-
-<p>
-Las zonas de entrenamiento se basan en el umbral de lactato (LTHR), que representa
-la intensidad máxima que puedes sostener de forma prolongada.
-</p>
-
-<p>
-Cada zona corresponde a un rango fisiológico diferente:
-</p>
-
-<ul>
-<li>Z1: Recuperación (bajo estrés)</li>
-<li>Z2: Base aeróbica (uso eficiente de grasa)</li>
-<li>Z3: Ritmo controlado</li>
-<li>Z4: Umbral (alto rendimiento)</li>
-<li>Z5: VO₂ máx (máxima intensidad)</li>
-</ul>
 
 </div>
 
-<!-- USO -->
-<div id="uso" style="margin-top:40px;">
-<h2>¿Cómo usar estas zonas?</h2>
-
-<p>
-Utiliza Z2 para mejorar resistencia, Z4 para aumentar tu rendimiento y Z5
-para intervalos intensos.
-</p>
-
 </div>
 
+<!-- POPUP -->
+<div id="popup">
+  <div class="popup-content">
+    <h2>Mis zonas</h2>
+    <div id="zonasGuardadas"></div>
+    <button onclick="cerrar()">Cerrar</button>
+  </div>
 </div>
 
 <script>
@@ -160,6 +155,42 @@ document.getElementById("z2").innerText=Math.round(lt*0.75)+"-"+Math.round(lt*0.
 document.getElementById("z3").innerText=Math.round(lt*0.85)+"-"+Math.round(lt*0.92);
 document.getElementById("z4").innerText=Math.round(lt*0.92)+"-"+Math.round(lt*0.99);
 document.getElementById("z5").innerText="≥ "+Math.round(lt);
+}
+
+function guardar(){
+let lt=document.getElementById("lt").value;
+if(!lt)return;
+
+localStorage.setItem("umbral", lt);
+alert("Guardado ✅");
+}
+
+function mostrar(){
+let lt=localStorage.getItem("umbral");
+
+if(!lt){
+alert("No has guardado zonas");
+return;
+}
+
+let html=`
+<p>Z1: < ${Math.round(lt*0.75)}</p>
+<p>Z2: ${Math.round(lt*0.75)} - ${Math.round(lt*0.85)}</p>
+<p>Z3: ${Math.round(lt*0.85)} - ${Math.round(lt*0.92)}</p>
+<p>Z4: ${Math.round(lt*0.92)} - ${Math.round(lt*0.99)}</p>
+<p>Z5: ≥ ${Math.round(lt)}</p>
+`;
+
+document.getElementById("zonasGuardadas").innerHTML=html;
+document.getElementById("popup").style.display="flex";
+}
+
+function cerrar(){
+document.getElementById("popup").style.display="none";
+}
+
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
