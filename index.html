@@ -19,144 +19,64 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:'Segoe UI',sans-serif;background:#000;color:#e2e8f0}
 .container{max-width:420px;margin:auto;padding:16px}
-.card{background:#0f172a;padding:18px;border-radius:20px;box-shadow:0 0 30px rgba(56,189,248,0.08);animation:fadeIn .4s ease}
-h1{
-text-align:center;
-margin:6px 0 10px;
-background:linear-gradient(90deg,var(--blue),var(--green));
--webkit-background-clip:text;
-color:transparent;
-}
-input{width:100%;padding:14px;font-size:18px;border-radius:14px;border:none;text-align:center;margin-top:10px}
+.card{background:#0f172a;padding:18px;border-radius:20px;box-shadow:0 0 30px rgba(56,189,248,0.08)}
+h1{text-align:center;background:linear-gradient(90deg,var(--blue),var(--green));-webkit-background-clip:text;color:transparent}
+input{width:100%;padding:14px;border-radius:14px;border:none;text-align:center;margin-top:10px}
 .actions{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-button{padding:12px 14px;border:none;border-radius:14px;font-weight:bold;font-size:14px;cursor:pointer;color:#000;transition:.2s}
-button:hover{transform:scale(1.05)}
-.btn{background:linear-gradient(90deg,var(--blue),var(--green))}
+button{padding:12px;border-radius:14px;border:none;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,var(--blue),var(--green));color:#000}
 .table{width:100%;margin-top:12px;border-collapse:collapse}
 .table td,.table th{padding:12px;border-bottom:1px solid #1e293b;text-align:center}
-.bar{display:flex;height:38px;margin-top:16px;border-radius:14px;overflow:hidden}
-.segment{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#000;padding:0 4px}
+.bar{display:flex;height:36px;margin-top:16px;border-radius:14px;overflow:hidden}
+.segment{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#000}
 .popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center}
-.popup-content{background:#0f172a;padding:20px;border-radius:20px;width:92%;max-width:420px;animation:scaleIn .3s ease}
-.hist{margin-top:18px}
-.empty{opacity:.7;text-align:center;padding:10px 0}
-.item{background:#1e293b;padding:12px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
-.item-actions{display:flex;gap:6px}
-.small-btn{padding:8px 10px;border-radius:10px;font-size:12px}
-.menu-popup{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0f172a;padding:10px;border-radius:12px;display:none}
-.section{margin-top:30px;font-size:14px}
-.diagram{display:flex;height:20px;border-radius:10px;overflow:hidden;margin-top:10px}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes scaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-content{background:#0f172a;padding:20px;border-radius:20px;width:90%;max-width:420px;color:#e2e8f0}
+.section{margin-top:15px;font-size:13px;text-align:center}
 </style>
 </head>
-
 <body>
 
 <div class="container">
 <div class="card">
-<h1>ZONAS FC PRO</h1>
-<p style="font-size:13px;text-align:center">Basado en umbral de lactato (LTHR). Más preciso que % FC máx porque refleja tu fisiología real.</p>
-<input type="number" id="lt" placeholder="Ingresa tu umbral" oninput="calc()">
+<h1>📈 ZONAS FC PRO</h1>
+<p style="text-align:center;font-size:13px">Basado en umbral de lactato 🧠 más preciso que FC máx</p>
+<input type="number" id="lt" placeholder="Ingresa tu umbral">
 <div class="actions">
-<button class="btn" onclick="guardar()">Guardar</button>
-<button class="btn" onclick="mostrarActual()">Ver</button>
+<button onclick="calc()">Calcular</button>
+<button onclick="mostrarActual()">Ver</button>
 </div>
 
 <table class="table">
 <tr><th>Zona</th><th>ppm</th></tr>
-<tr><td>Z1</td><td id="z1"></td></tr>
-<tr><td>Z2</td><td id="z2"></td></tr>
-<tr><td>Z3</td><td id="z3"></td></tr>
-<tr><td>Z4</td><td id="z4"></td></tr>
-<tr><td>Z5</td><td id="z5"></td></tr>
+<tr><td>Z1 🟢</td><td id="z1"></td></tr>
+<tr><td>Z2 🟩</td><td id="z2"></td></tr>
+<tr><td>Z3 🟨</td><td id="z3"></td></tr>
+<tr><td>Z4 🟧</td><td id="z4"></td></tr>
+<tr><td>Z5 🟥</td><td id="z5"></td></tr>
 </table>
 
 <div class="bar" id="bar"></div>
-</div>
 
-<div class="hist" id="historial"></div>
-
-<div class="section">
-<h3>VT1 (Umbral aeróbico)</h3>
-<p>Marca el punto donde el lactato empieza a elevarse levemente. Predomina el metabolismo aeróbico (Z1–Z2).</p>
-<div class="diagram">
-<div style="background:var(--green);width:45%"></div>
-<div style="background:var(--lgreen);width:20%"></div>
-<div style="background:var(--yellow);width:15%"></div>
-<div style="background:var(--red);width:20%"></div>
-</div>
-</div>
-
-<div class="section">
-<h3>VT2 (Umbral anaeróbico)</h3>
-<p>Punto máximo sostenible. A partir de aquí el lactato se acumula rápidamente (Z4–Z5).</p>
-<div class="diagram">
-<div style="background:var(--green);width:25%"></div>
-<div style="background:var(--yellow);width:20%"></div>
-<div style="background:var(--orange);width:25%"></div>
-<div style="background:var(--red);width:30%"></div>
-</div>
-</div>
+<div class="section" id="vtinfo"></div>
 
 </div>
-
-<!-- BOTON GUIA UMBRAL -->
-<div class="container" style="padding-top:0">
-  <div class="actions">
-    <button class="btn" onclick="abrirGuia()">¿CÓMO CALCULAR MI UMBRAL DE LACTATO?</button>
-  </div>
-</div>
-
-<!-- POPUP GUIA -->
-<div class="popup" id="guia">
-  <div class="popup-content">
-    <h2>Cómo calcular tu umbral de lactato (LTHR)</h2>
-    <p style="font-size:13px;opacity:.9">
-      Método práctico validado en entrenamiento: se basa en un esfuerzo máximo controlado y medir la frecuencia cardíaca promedio en los últimos 20 minutos.
-    </p>
-
-    <h3>Protocolo paso a paso</h3>
-    <ol style="font-size:13px;line-height:1.5">
-      <li>Calienta 10–15 minutos a ritmo suave.</li>
-      <li>Inicia un esfuerzo fuerte y constante durante 30 minutos (running o ciclismo).</li>
-      <li>No salgas muy rápido: busca un ritmo que puedas sostener hasta el final.</li>
-      <li>En los últimos 20 minutos, mantén la máxima intensidad sostenible.</li>
-      <li>Calcula el promedio de tu frecuencia cardíaca en esos últimos 20 minutos.</li>
-    </ol>
-
-    <p style="font-size:13px">
-      Ese valor es tu <strong>umbral de lactato (LTHR)</strong>.
-    </p>
-
-    <h3>¿Por qué es mejor que usar FC máxima?</h3>
-    <p style="font-size:13px">
-      Porque refleja tu capacidad fisiológica real. La FC máxima es un valor genérico,
-      mientras que el umbral mide el punto donde tu cuerpo empieza a acumular lactato,
-      lo que determina tu rendimiento real.
-    </p>
-
-    <div class="actions">
-      <button class="btn" onclick="cerrarGuia()">Cerrar</button>
-    </div>
-  </div>
 </div>
 
 <div class="popup" id="popup">
 <div class="popup-content" id="capture">
-<h2>Mis zonas</h2>
+<h2>📊 Mis zonas</h2>
 <div id="tablaPopup"></div>
 <div id="barPopup" class="bar"></div>
+<div id="vtPopup" class="section"></div>
 <div class="actions">
-<button class="btn" onclick="descargar()">Descargar</button>
-<button class="btn" onclick="cerrar()">Cerrar</button>
+<button onclick="descargar()">📥 Descargar</button>
+<button onclick="cerrar()">Cerrar</button>
 </div>
 </div>
 </div>
-
-<div id="menu" class="menu-popup"></div>
 
 <script>
+function getEl(id){return document.getElementById(id)}
+
 function getZonas(lt){
 let z1=Math.round(lt*0.75);
 let z2=Math.round(lt*0.85);
@@ -165,125 +85,67 @@ let z4=Math.round(lt*0.99);
 return {z1,z2,z3,z4,lt};
 }
 
-function renderBar(lt,id){
+function renderVT(lt,id){
+let {z2,z4}=getZonas(lt);
+getEl(id).innerHTML=`
+<p>🫁 VT1 ≈ ${z2} ppm (inicio zona aeróbica)</p>
+<p>🔥 VT2 ≈ ${lt} ppm (límite máximo sostenible)</p>`;
+}
+
+function calc(){
+let lt=parseInt(getEl("lt").value);
+if(!lt) return;
 let {z1,z2,z3,z4}=getZonas(lt);
-document.getElementById(id).innerHTML=`
+
+getEl("z1").textContent="< "+z1;
+getEl("z2").textContent=z1+"-"+z2;
+getEl("z3").textContent=z2+"-"+z3;
+getEl("z4").textContent=z3+"-"+z4;
+getEl("z5").textContent="≥ "+lt;
+
+getEl("bar").innerHTML=`
 <div class="segment" style="background:#22c55e;width:20%">< ${z1}</div>
 <div class="segment" style="background:#84cc16;width:20%">${z1}-${z2}</div>
 <div class="segment" style="background:#eab308;width:20%">${z2}-${z3}</div>
 <div class="segment" style="background:#f97316;width:20%">${z3}-${z4}</div>
 <div class="segment" style="background:#ef4444;width:20%">≥ ${lt}</div>`;
-}
 
-function calc(){
-let lt=parseInt(document.getElementById("lt").value);
-if(!lt)return;
-let {z1,z2,z3,z4}=getZonas(lt);
-z1e.textContent="< "+z1;
-z2e.textContent=z1+" - "+z2;
-z3e.textContent=z2+" - "+z3;
-z4e.textContent=z3+" - "+z4;
-z5e.textContent="≥ "+lt;
-renderBar(lt,"bar");
-}
-
-function guardar(){
-let lt=parseInt(document.getElementById("lt").value);
-if(!lt)return;
-let data=JSON.parse(localStorage.getItem("zonas"))||[];
-data.unshift({lt,fecha:new Date().toLocaleString()});
-localStorage.setItem("zonas",JSON.stringify(data));
-cargar();
-}
-
-function cargar(){
-let data=JSON.parse(localStorage.getItem("zonas"))||[];
-if(data.length===0){
-historial.innerHTML='<div class="empty">Aún no has guardado zonas</div>';
-return;
-}
-let html="";
-data.forEach((d,i)=>{
-html+=`<div class="item">
-<div>${d.lt} bpm<br><small>${d.fecha}</small></div>
-<div class="item-actions">
-<button class="small-btn btn" onclick="verItem(${i})">Ver</button>
-<button class="small-btn" onclick="menuAcciones(${i})">⋮</button>
-</div>
-</div>`;
-});
-historial.innerHTML=html;
-}
-
-function menuAcciones(i){
-menu.innerHTML=`
-<button onclick="eliminar(${i})">Eliminar</button>
-<button onclick="cerrarMenu()">Cancelar</button>`;
-menu.style.display="block";
-}
-function cerrarMenu(){menu.style.display="none";}
-
-function eliminar(i){
-let data=JSON.parse(localStorage.getItem("zonas"))||[];
-data.splice(i,1);
-localStorage.setItem("zonas",JSON.stringify(data));
-cargar();
-cerrarMenu();
-}
-
-function renderPopup(lt){
-let {z1,z2,z3,z4}=getZonas(lt);
-tablaPopup.innerHTML=`
-<table class="table">
-<tr style="color:#22c55e"><td>Z1</td><td>< ${z1}</td></tr>
-<tr style="color:#84cc16"><td>Z2</td><td>${z1}-${z2}</td></tr>
-<tr style="color:#eab308"><td>Z3</td><td>${z2}-${z3}</td></tr>
-<tr style="color:#f97316"><td>Z4</td><td>${z3}-${z4}</td></tr>
-<tr style="color:#ef4444"><td>Z5</td><td>≥ ${lt}</td></tr>
-</table>`;
-renderBar(lt,"barPopup");
-popup.style.display="flex";
+renderVT(lt,"vtinfo");
 }
 
 function mostrarActual(){
-let lt=parseInt(document.getElementById("lt").value);
-if(!lt)return;
-renderPopup(lt);
-}
+let lt=parseInt(getEl("lt").value);
+if(!lt) return;
+let {z1,z2,z3,z4}=getZonas(lt);
 
-function verItem(i){
-let data=JSON.parse(localStorage.getItem("zonas"))||[];
-let item=data[i];
-if(!item)return;
-renderPopup(parseInt(item.lt));
+getEl("tablaPopup").innerHTML=`
+<table class="table">
+<tr><td>Z1</td><td>< ${z1}</td></tr>
+<tr><td>Z2</td><td>${z1}-${z2}</td></tr>
+<tr><td>Z3</td><td>${z2}-${z3}</td></tr>
+<tr><td>Z4</td><td>${z3}-${z4}</td></tr>
+<tr><td>Z5</td><td>≥ ${lt}</td></tr>
+</table>`;
+
+getEl("barPopup").innerHTML=getEl("bar").innerHTML;
+renderVT(lt,"vtPopup");
+getEl("popup").style.display="flex";
 }
 
 function descargar(){
-html2canvas(document.getElementById("capture")).then(canvas=>{
+html2canvas(getEl("capture"),{
+backgroundColor:'#0f172a',
+scale:3,
+useCORS:true
+}).then(canvas=>{
 let link=document.createElement("a");
 link.download="zonas.png";
-link.href=canvas.toDataURL();
+link.href=canvas.toDataURL("image/png");
 link.click();
 });
 }
 
-function cerrar(){popup.style.display="none";}
-
-function abrirGuia(){document.getElementById("guia").style.display="flex";}
-function cerrarGuia(){document.getElementById("guia").style.display="none";}
-
-let z1e=document.getElementById("z1"),
-z2e=document.getElementById("z2"),
-z3e=document.getElementById("z3"),
-z4e=document.getElementById("z4"),
-z5e=document.getElementById("z5"),
-bar=document.getElementById("bar"),
-historial=document.getElementById("historial"),
-tablaPopup=document.getElementById("tablaPopup"),
-popup=document.getElementById("popup"),
-menu=document.getElementById("menu");
-
-cargar();
+function cerrar(){getEl("popup").style.display="none"}
 </script>
 
 </body>
