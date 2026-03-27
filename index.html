@@ -3,79 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Zonas FC PRO</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
 
 <style>
 body {
-  font-family: Arial;
-  background: #0f172a;
-  color: #e2e8f0;
-  text-align: center;
-  padding:10px;
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#0f172a;
+  color:#e2e8f0;
 }
 
-.container {
-  width: 95%;
-  max-width: 400px;
-  margin: auto;
-  background: #1e293b;
+/* Sidebar */
+.sidebar {
+  position:fixed;
+  width:220px;
+  height:100%;
+  background:#020617;
   padding:20px;
-  border-radius: 12px;
 }
 
-h1 {
-  font-size: 24px;
+.sidebar h2 {
+  color:#38bdf8;
 }
 
-input {
-  padding:12px;
-  font-size:18px;
-  width: 100%;
+.sidebar a {
+  display:block;
+  color:#94a3b8;
   margin:10px 0;
+  text-decoration:none;
+}
+
+/* Main */
+.main {
+  margin-left:240px;
+  padding:20px;
+}
+
+/* Card */
+.card {
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  max-width:500px;
+}
+
+/* Input */
+input {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  font-size:18px;
   border-radius:8px;
   border:none;
 }
 
+/* Table */
 table {
   width:100%;
-  font-size:16px;
+  margin-top:15px;
 }
 
 td, th {
   padding:10px;
+  border-bottom:1px solid #334155;
 }
 
-.bar {
-  display:flex;
-  height:20px;
-  margin-top:20px;
-  border-radius:8px;
-  overflow:hidden;
-}
-
-.segment {
-  height:100%;
+/* Responsive */
+@media(max-width:768px){
+  .sidebar {
+    display:none;
+  }
+  .main {
+    margin-left:0;
+  }
 }
 </style>
 
 </head>
+
 <body>
 
-<div class="container">
+<!-- MENU -->
+<div class="sidebar">
+  <h2>Zonas FC</h2>
+  <a href="#">Calculadora</a>
+  <a href="#info">¿Qué son las zonas?</a>
+  <a href="#uso">Cómo usarlas</a>
+</div>
 
-<h1>Zonas FC PRO</h1>
+<!-- CONTENIDO -->
+<div class="main">
 
-<p>
-Basado en umbral:<br>
-Z1 &lt;75%<br>
-Z2 75–85%<br>
-Z3 85–92%<br>
-Z4 92–99%<br>
-Z5 ≥100%
-</p>
+<div class="card">
+<h1>Calculadora de Zonas</h1>
+
+<p>Basado en frecuencia cardíaca umbral (LTHR)</p>
 
 <input type="number" id="lt" placeholder="Ingresa tu umbral" oninput="calc()">
 
@@ -87,46 +112,54 @@ Z5 ≥100%
 <tr><td>Z4</td><td id="z4"></td></tr>
 <tr><td>Z5</td><td id="z5"></td></tr>
 </table>
+</div>
 
-<div class="bar" id="grafica"></div>
+<!-- INFO -->
+<div id="info" style="margin-top:40px;">
+<h2>¿Por qué se calculan así las zonas?</h2>
+
+<p>
+Las zonas de entrenamiento se basan en el umbral de lactato (LTHR), que representa
+la intensidad máxima que puedes sostener de forma prolongada.
+</p>
+
+<p>
+Cada zona corresponde a un rango fisiológico diferente:
+</p>
+
+<ul>
+<li>Z1: Recuperación (bajo estrés)</li>
+<li>Z2: Base aeróbica (uso eficiente de grasa)</li>
+<li>Z3: Ritmo controlado</li>
+<li>Z4: Umbral (alto rendimiento)</li>
+<li>Z5: VO₂ máx (máxima intensidad)</li>
+</ul>
+
+</div>
+
+<!-- USO -->
+<div id="uso" style="margin-top:40px;">
+<h2>¿Cómo usar estas zonas?</h2>
+
+<p>
+Utiliza Z2 para mejorar resistencia, Z4 para aumentar tu rendimiento y Z5
+para intervalos intensos.
+</p>
+
+</div>
 
 </div>
 
 <script>
-function calc() {
-  let lt = document.getElementById("lt").value;
-  if(!lt) return;
+function calc(){
+let lt=document.getElementById("lt").value;
+if(!lt)return;
 
-  let zonas = [
-    [0,0.75],
-    [0.75,0.85],
-    [0.85,0.92],
-    [0.92,0.99],
-    [1,1.1]
-  ];
-
-  let colores = ["#22c55e","#84cc16","#eab308","#f97316","#ef4444"];
-
-  document.getElementById("z1").innerText = "< "+Math.round(lt*0.75);
-  document.getElementById("z2").innerText = Math.round(lt*0.75)+"-"+Math.round(lt*0.85);
-  document.getElementById("z3").innerText = Math.round(lt*0.85)+"-"+Math.round(lt*0.92);
-  document.getElementById("z4").innerText = Math.round(lt*0.92)+"-"+Math.round(lt*0.99);
-  document.getElementById("z5").innerText = "≥ "+Math.round(lt);
-
-  let grafica = "";
-
-  zonas.forEach((z,i)=>{
-    let width = (z[1]-z[0])*100;
-    grafica += `<div class="segment" style="width:${width}%; background:${colores[i]}"></div>`;
-  });
-
-  document.getElementById("grafica").innerHTML = grafica;
-}
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+document.getElementById("z1").innerText="< "+Math.round(lt*0.75);
+document.getElementById("z2").innerText=Math.round(lt*0.75)+"-"+Math.round(lt*0.85);
+document.getElementById("z3").innerText=Math.round(lt*0.85)+"-"+Math.round(lt*0.92);
+document.getElementById("z4").innerText=Math.round(lt*0.92)+"-"+Math.round(lt*0.99);
+document.getElementById("z5").innerText="≥ "+Math.round(lt);
 }
 </script>
 
