@@ -1,152 +1,1448 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZONAS FC PRO</title>
-<link rel="manifest" href="manifest.json">
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zonas FC PRO - Unificado</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- Google Fonts para Tipografía Premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- html2canvas para captura de imagen de alta calidad -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-<style>
-:root{
---blue:#38bdf8;
---green:#22c55e;
---lgreen:#84cc16;
---yellow:#eab308;
---orange:#f97316;
---red:#ef4444;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',sans-serif;background:#000;color:#e2e8f0}
-.container{max-width:420px;margin:auto;padding:16px}
-.card{background:#0f172a;padding:18px;border-radius:20px;box-shadow:0 0 30px rgba(56,189,248,0.08)}
-h1{text-align:center;background:linear-gradient(90deg,var(--blue),var(--green));-webkit-background-clip:text;color:transparent}
-input{width:100%;padding:14px;border-radius:14px;border:none;text-align:center;margin-top:10px}
-.actions{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-button{padding:12px;border-radius:14px;border:none;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,var(--blue),var(--green));color:#000}
-.table{width:100%;margin-top:12px;border-collapse:collapse}
-.table td,.table th{padding:12px;border-bottom:1px solid #1e293b;text-align:center}
-.bar{display:flex;height:36px;margin-top:16px;border-radius:14px;overflow:hidden}
-.segment{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#000}
-.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center}
-.popup-content{background:#0f172a;padding:20px;border-radius:20px;width:90%;max-width:420px;color:#e2e8f0}
-.section{margin-top:15px;font-size:13px;text-align:center}
-</style>
+  <style>
+    :root {
+      --bg-primary: #080c14;
+      --bg-secondary: #0f1626;
+      --bg-card: rgba(20, 30, 54, 0.7);
+      --bg-card-hover: rgba(28, 41, 74, 0.85);
+      --border-color: rgba(56, 189, 248, 0.15);
+      --border-glow: rgba(56, 189, 248, 0.25);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-gradient: linear-gradient(135deg, #38bdf8, #10b981);
+      --danger-gradient: linear-gradient(135deg, #ef4444, #b91c1c);
+      
+      /* Colores Deportivos para Zonas */
+      --z1-color: #10b981; /* Recuperación - Esmeralda */
+      --z2-color: #84cc16; /* Base aeróbica - Lima */
+      --z3-color: #f59e0b; /* Tempo - Ámbar */
+      --z4-color: #f97316; /* Umbral - Naranja */
+      --z5-color: #ef4444; /* Capacidad anaeróbica - Rojo */
+      --z6-color: #ec4899; /* VO2 Máx - Rosa */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    /* Contenedor Principal */
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      margin: 10px auto 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Cabecera Premium */
+    header {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      letter-spacing: 0.2px;
+    }
+
+    /* Menú de Navegación por Pestañas */
+    .tabs-nav {
+      display: flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 6px;
+      gap: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 4px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gradient);
+      color: #04080f;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .tab-btn span.icon {
+      font-size: 18px;
+    }
+
+    /* Tarjetas de Contenido */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 8px 32px rgba(56, 189, 248, 0.08);
+    }
+
+    /* Pestañas de Contenido */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Títulos de Sección */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .description {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+    }
+
+    /* Guía del Test de Friel de 20 Minutos */
+    .test-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      background: var(--accent-gradient);
+      color: #04080f;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-body h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .step-body p {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+
+    /* Caja de acción rápida del Test */
+    .action-box {
+      background: rgba(56, 189, 248, 0.05);
+      border: 1px dashed var(--accent-blue);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .action-box p {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    /* Formularios y Controles */
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 14px 18px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 16px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    /* Selector de zonas premium */
+    .selector-container {
+      display: flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .selector-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .selector-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Botones */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #04080f;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: var(--danger-gradient);
+      color: var(--text-primary);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* Tabla de Resultados Premium */
+    .results-section {
+      margin-top: 18px;
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .results-section.show {
+      display: block;
+    }
+
+    .table-container {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+    }
+
+    .zones-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(15, 22, 38, 0.6);
+      text-align: left;
+    }
+
+    .zones-table th {
+      background: rgba(15, 22, 38, 0.9);
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .zones-table td {
+      padding: 10px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+
+    .zones-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Células de Zona Estilizadas */
+    .zone-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      color: #000;
+    }
+
+    .zone-z1 { background-color: var(--z1-color); }
+    .zone-z2 { background-color: var(--z2-color); }
+    .zone-z3 { background-color: var(--z3-color); }
+    .zone-z4 { background-color: var(--z4-color); }
+    .zone-z5 { background-color: var(--z5-color); }
+    .zone-z6 { background-color: var(--z6-color); }
+
+    .zone-name-col {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .zone-desc {
+      font-size: 10px;
+      color: var(--text-secondary);
+      display: block;
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .zone-range {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .zone-percentage {
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: block;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Gráfico de Barras Deportivo */
+    .hud-bar {
+      display: flex;
+      height: 30px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 16px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .hud-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      color: #000;
+      transition: width 0.3s ease;
+    }
+
+    /* Umbrales Fisiológicos */
+    .thresholds-info {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .thresholds-info h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .threshold-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .threshold-label {
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .threshold-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .threshold-value {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    /* Historial Local */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .history-empty {
+      text-align: center;
+      padding: 30px 10px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-empty span.icon {
+      font-size: 28px;
+      opacity: 0.5;
+    }
+
+    .history-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .history-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px);
+    }
+
+    .history-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .history-info p {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .history-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .history-val {
+      text-align: right;
+    }
+
+    .history-val-lthr {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--accent-blue);
+    }
+
+    .history-val-model {
+      font-size: 10px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-top: 2px;
+      display: inline-block;
+    }
+
+    .history-btn-del {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .history-btn-del:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Modal / Popup Premium */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 8, 16, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .popup-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Contenido de captura optimizado visualmente */
+    .capture-area {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+      padding: 24px;
+      color: #f8fafc;
+    }
+
+    .capture-header {
+      text-align: center;
+      margin-bottom: 16px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+    }
+
+    .capture-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .capture-header p {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .capture-meta-box {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+
+    .capture-meta-box span.title {
+      color: var(--text-secondary);
+    }
+
+    .capture-meta-box span.value {
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .popup-actions {
+      padding: 16px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg-secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Modal de Guardado (Nombre Personalizado) */
+    .save-prompt-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 8, 16, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 110;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .save-prompt-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 360px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .save-prompt-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent-blue);
+    }
+
+    .save-prompt-card p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .save-prompt-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .save-prompt-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+
+    .save-prompt-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Notificación flotante Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      background: var(--accent-gradient);
+      color: #04080f;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+      z-index: 120;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 380px) {
+      header h1 { font-size: 24px; }
+      .card { padding: 16px; }
+      .tab-btn { font-size: 12px; }
+      .tab-btn span.icon { font-size: 16px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-<div class="card">
-<h1>📈 ZONAS FC PRO</h1>
-<p style="text-align:center;font-size:13px">Basado en umbral de lactato 🧠 más preciso que FC máx</p>
-<input type="number" id="lt" placeholder="Ingresa tu umbral">
-<div class="actions">
-<button onclick="calc()">Calcular</button>
-<button onclick="mostrarActual()">Ver</button>
-</div>
+  <div class="app-container">
+    
+    <!-- Cabecera -->
+    <header>
+      <h1>ZONAS FC PRO</h1>
+      <p>Unificado • Umbral de Lactato (LTHR) Más Preciso</p>
+    </header>
 
-<table class="table">
-<tr><th>Zona</th><th>ppm</th></tr>
-<tr><td>Z1 🟢</td><td id="z1"></td></tr>
-<tr><td>Z2 🟩</td><td id="z2"></td></tr>
-<tr><td>Z3 🟨</td><td id="z3"></td></tr>
-<tr><td>Z4 🟧</td><td id="z4"></td></tr>
-<tr><td>Z5 🟥</td><td id="z5"></td></tr>
-</table>
+    <!-- Menú de Pestañas -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('test')">
+        <span class="icon">🚴</span>
+        <span>1. Test Friel</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('calc')">
+        <span class="icon">📈</span>
+        <span>2. Calculadora</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('history')">
+        <span class="icon">💾</span>
+        <span>3. Historial</span>
+      </button>
+    </nav>
 
-<div class="bar" id="bar"></div>
+    <!-- PESTAÑA 1: INSTRUCCIONES DEL TEST DE FRIEL -->
+    <div id="tab-test" class="tab-content active">
+      <div class="card">
+        <h2 class="section-title"><span>📝</span> Test de Friel (20 min)</h2>
+        <p class="description">
+          Para entrenar con precisión científica, necesitas conocer tu **Frecuencia Cardíaca de Umbral de Lactato (LTHR)**. El Test de Friel de 20 minutos es el estándar de oro de campo para obtener este valor de forma fiable.
+        </p>
 
-<div class="section" id="vtinfo"></div>
+        <div class="test-steps">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-body">
+              <h4>Calentamiento Completo</h4>
+              <p>Realiza 15 minutos de pedaleo o trote ligero y progresivo. Incluye 2 o 3 aceleraciones rápidas de 30 segundos para activar tu sistema cardiovascular.</p>
+            </div>
+          </div>
 
-</div>
-</div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-body">
+              <h4>Esfuerzo Máximo de 30 Minutos</h4>
+              <p>Comienza una prueba contrarreloj individual de 30 minutos a tu máximo esfuerzo constante. Debe ser un ritmo exigente que puedas mantener de principio a fin, <strong>en solitario</strong>.</p>
+            </div>
+          </div>
 
-<div class="popup" id="popup">
-<div class="popup-content" id="capture">
-<h2>📊 Mis zonas</h2>
-<div id="tablaPopup"></div>
-<div id="barPopup" class="bar"></div>
-<div id="vtPopup" class="section"></div>
-<div class="actions">
-<button onclick="descargar()">📥 Descargar</button>
-<button onclick="cerrar()">Cerrar</button>
-</div>
-</div>
-</div>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-body">
+              <h4>Registrar los últimos 20 minutos</h4>
+              <p>Presiona el botón de Lap en tu ciclocomputador o reloj a los 10 minutos de iniciar el esfuerzo. Tu **Umbral de Lactato** es la **frecuencia cardíaca media de los últimos 20 minutos** del esfuerzo total.</p>
+            </div>
+          </div>
+        </div>
 
-<script>
-function getEl(id){return document.getElementById(id)}
+        <div class="action-box">
+          <p>¿Terminaste tu test? Ingresa tus pulsaciones promedio de los últimos 20 minutos:</p>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <div class="input-wrapper">
+              <input type="number" id="test-lthr-input" placeholder="Ej. 165">
+              <span class="input-suffix">ppm</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="setThresholdFromTest()">
+            Establecer y Calcular Zonas
+          </button>
+        </div>
+      </div>
+    </div>
 
-function getZonas(lt){
-let z1=Math.round(lt*0.75);
-let z2=Math.round(lt*0.85);
-let z3=Math.round(lt*0.92);
-let z4=Math.round(lt*0.99);
-return {z1,z2,z3,z4,lt};
-}
+    <!-- PESTAÑA 2: CALCULADORA DE ZONAS -->
+    <div id="tab-calc" class="tab-content">
+      <div class="card">
+        <h2 class="section-title"><span>⚙️</span> Calculadora de Zonas</h2>
+        <p class="description">Ingresa tu frecuencia cardíaca de umbral de lactato (LTHR) en pulsaciones por minuto y selecciona el modelo de zonas que desees utilizar.</p>
 
-function renderVT(lt,id){
-let {z2,z4}=getZonas(lt);
-getEl(id).innerHTML=`
-<p>🫁 VT1 ≈ ${z2} ppm (inicio zona aeróbica)</p>
-<p>🔥 VT2 ≈ ${lt} ppm (límite máximo sostenible)</p>`;
-}
+        <!-- Formularios de Cálculo -->
+        <div class="form-group">
+          <label for="lthr-input">Tu Umbral de Lactato (LTHR)</label>
+          <div class="input-wrapper">
+            <input type="number" id="lthr-input" placeholder="Ingresa tus ppm" oninput="updateCalculation()">
+            <span class="input-suffix">ppm</span>
+          </div>
+        </div>
 
-function calc(){
-let lt=parseInt(getEl("lt").value);
-if(!lt) return;
-let {z1,z2,z3,z4}=getZonas(lt);
+        <div class="form-group">
+          <label>Modelo de Entrenamiento</label>
+          <div class="selector-container">
+            <button id="btn-model-5" class="selector-btn active" onclick="setModelType('5')">5 Zonas (Estándar)</button>
+            <button id="btn-model-6" class="selector-btn" onclick="setModelType('6')">6 Zonas (Alta Intensidad)</button>
+          </div>
+        </div>
 
-getEl("z1").textContent="< "+z1;
-getEl("z2").textContent=z1+"-"+z2;
-getEl("z3").textContent=z2+"-"+z3;
-getEl("z4").textContent=z3+"-"+z4;
-getEl("z5").textContent="≥ "+lt;
+        <!-- Seccion de Resultados Dinamicos -->
+        <div id="results-area" class="results-section">
+          
+          <h3 class="section-title" style="font-size: 16px; margin-top: 10px; color: var(--text-primary);">
+            📊 Zonas Calculadas
+          </h3>
 
-getEl("bar").innerHTML=`
-<div class="segment" style="background:#22c55e;width:20%">< ${z1}</div>
-<div class="segment" style="background:#84cc16;width:20%">${z1}-${z2}</div>
-<div class="segment" style="background:#eab308;width:20%">${z2}-${z3}</div>
-<div class="segment" style="background:#f97316;width:20%">${z3}-${z4}</div>
-<div class="segment" style="background:#ef4444;width:20%">≥ ${lt}</div>`;
+          <div class="table-container">
+            <table class="zones-table">
+              <thead>
+                <tr>
+                  <th>Zona</th>
+                  <th>Tipo / Nivel</th>
+                  <th style="text-align: right;">Rango ppm</th>
+                </tr>
+              </thead>
+              <tbody id="zones-table-body">
+                <!-- Se rellena dinámicamente -->
+              </tbody>
+            </table>
+          </div>
 
-renderVT(lt,"vtinfo");
-}
+          <!-- Barra Gráfica HUD -->
+          <div id="hud-bar-chart" class="hud-bar">
+            <!-- Se rellena dinámicamente -->
+          </div>
 
-function mostrarActual(){
-let lt=parseInt(getEl("lt").value);
-if(!lt) return;
-let {z1,z2,z3,z4}=getZonas(lt);
+          <!-- Umbrales Fisiológicos -->
+          <div class="thresholds-info">
+            <h4>💡 Umbrales Ventilatorios Estimados</h4>
+            <div class="threshold-row">
+              <span class="threshold-label">
+                <span class="threshold-dot" style="background-color: var(--z2-color);"></span>
+                Umbral Aeróbico (VT1)
+              </span>
+              <span class="threshold-value" id="vt1-val">-- ppm</span>
+            </div>
+            <div class="threshold-row">
+              <span class="threshold-label">
+                <span class="threshold-dot" style="background-color: var(--z4-color);"></span>
+                Umbral Anaeróbico / Lactato (VT2)
+              </span>
+              <span class="threshold-value" id="vt2-val">-- ppm</span>
+            </div>
+          </div>
 
-getEl("tablaPopup").innerHTML=`
-<table class="table">
-<tr><td>Z1</td><td>< ${z1}</td></tr>
-<tr><td>Z2</td><td>${z1}-${z2}</td></tr>
-<tr><td>Z3</td><td>${z2}-${z3}</td></tr>
-<tr><td>Z4</td><td>${z3}-${z4}</td></tr>
-<tr><td>Z5</td><td>≥ ${lt}</td></tr>
-</table>`;
+          <!-- Botones de Acción -->
+          <button class="btn btn-primary" onclick="openSavePrompt()">
+            💾 Guardar en Historial
+          </button>
+          <div class="btn-actions-row">
+            <button class="btn btn-secondary" onclick="openCapturePopup()">
+              🖼️ Ver Ficha Imagen
+            </button>
+            <button class="btn btn-secondary" onclick="clearCalculator()">
+              Limpiar
+            </button>
+          </div>
 
-getEl("barPopup").innerHTML=getEl("bar").innerHTML;
-renderVT(lt,"vtPopup");
-getEl("popup").style.display="flex";
-}
+        </div>
+      </div>
+    </div>
 
-function descargar(){
-html2canvas(getEl("capture"),{
-backgroundColor:'#0f172a',
-scale:3,
-useCORS:true
-}).then(canvas=>{
-let link=document.createElement("a");
-link.download="zonas.png";
-link.href=canvas.toDataURL("image/png");
-link.click();
-});
-}
+    <!-- PESTAÑA 3: HISTORIAL DE REGISTROS -->
+    <div id="tab-history" class="tab-content">
+      <div class="card">
+        <h2 class="section-title"><span>📂</span> Mi Historial</h2>
+        <p class="description">Guarda y compara las mediciones de tus tests anteriores para evaluar tu progresión a lo largo de tu temporada de entrenamiento.</p>
 
-function cerrar(){getEl("popup").style.display="none"}
-</script>
+        <div id="history-items-container" class="history-list">
+          <!-- Renderizado del historial por JS -->
+        </div>
+      </div>
+    </div>
 
+  </div>
+
+  <!-- MODAL 1: EXPORTACIÓN EN IMAGEN (html2canvas) -->
+  <div id="capture-popup" class="popup-overlay">
+    <div class="popup-card">
+      
+      <!-- Contenedor que será capturado -->
+      <div id="capture-image-area" class="capture-area">
+        <div class="capture-header">
+          <h2>MIS ZONAS DE ENTRENAMIENTO</h2>
+          <p>Generado con Zonas FC PRO</p>
+        </div>
+        
+        <div class="capture-meta-box">
+          <div>
+            <span class="title">Nombre:</span> <span class="value" id="cap-name">Entrenamiento</span>
+          </div>
+          <div>
+            <span class="title">Umbral (LTHR):</span> <span class="value" id="cap-lthr">160 ppm</span>
+          </div>
+        </div>
+
+        <div class="table-container" style="background: rgba(15, 22, 38, 0.9);">
+          <table class="zones-table">
+            <thead>
+              <tr>
+                <th>Zona</th>
+                <th>Rango</th>
+                <th style="text-align: right;">% LTHR</th>
+              </tr>
+            </thead>
+            <tbody id="cap-table-body">
+              <!-- Se rellena dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="cap-hud-bar" class="hud-bar" style="margin-bottom: 0;">
+          <!-- Se rellena dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Acciones del Modal -->
+      <div class="popup-actions">
+        <button class="btn btn-primary" onclick="downloadImage()">
+          📥 Descargar Imagen
+        </button>
+        <button class="btn btn-secondary" onclick="closeCapturePopup()">
+          Cerrar Ventana
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 2: GUARDAR HISTORIAL CON NOMBRE -->
+  <div id="save-prompt" class="save-prompt-overlay">
+    <div class="save-prompt-card">
+      <h3>Guardar Registro</h3>
+      <p>Dale un nombre identificable a este cálculo (ej. Pretemporada, Test de Mayo):</p>
+      <input type="text" id="save-label-input" class="save-prompt-input" placeholder="Nombre del Test">
+      <div class="save-prompt-buttons">
+        <button class="btn btn-primary" style="padding: 10px 14px;" onclick="saveToHistory()">Guardar</button>
+        <button class="btn btn-secondary" style="padding: 10px 14px;" onclick="closeSavePrompt()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificación Toast flotante -->
+  <div id="toast" class="toast">Mensaje de prueba</div>
+
+  <!-- LÓGICA DE APLICACIÓN EN JAVASCRIPT -->
+  <script>
+    // Variables de Estado
+    let currentModelType = '5'; // '5' o '6' zonas
+    let calculatedZones = [];
+    let activeThreshold = 0;
+
+    // Modelos de Cálculo (Ratios sobre LTHR)
+    const MODELS = {
+      '5': [
+        { key: 'Z1', name: 'Recuperación Activa', desc: 'Pedaleo regenerativo suave', minRatio: 0.00, maxRatio: 0.75, color: 'var(--z1-color)' },
+        { key: 'Z2', name: 'Resistencia Aeróbica', desc: 'Ritmo base de larga duración', minRatio: 0.75, maxRatio: 0.85, color: 'var(--z2-color)' },
+        { key: 'Z3', name: 'Tempo / Ritmo', desc: 'Resistencia aeróbica media-alta', minRatio: 0.85, maxRatio: 0.92, color: 'var(--z3-color)' },
+        { key: 'Z4', name: 'Umbral de Lactato', desc: 'Límite máximo sostenible', minRatio: 0.92, maxRatio: 0.99, color: 'var(--z4-color)' },
+        { key: 'Z5', name: 'Capacidad Anaeróbica', desc: 'Máximo esfuerzo de corta duración', minRatio: 0.99, maxRatio: 1.15, color: 'var(--z5-color)' }
+      ],
+      '6': [
+        { key: 'Z1', name: 'Recuperación Activa', desc: 'Recuperación muy suave', minRatio: 0.00, maxRatio: 0.75, color: 'var(--z1-color)' },
+        { key: 'Z2', name: 'Resistencia Aeróbica', desc: 'Entrenamiento base', minRatio: 0.75, maxRatio: 0.85, color: 'var(--z2-color)' },
+        { key: 'Z3', name: 'Tempo / Ritmo', desc: 'Ritmo alegre e intenso', minRatio: 0.85, maxRatio: 0.92, color: 'var(--z3-color)' },
+        { key: 'Z4', name: 'Umbral de Lactato', desc: 'Punto crítico de acumulación', minRatio: 0.92, maxRatio: 1.00, color: 'var(--z4-color)' },
+        { key: 'Z5', name: 'Capacidad Anaeróbica', desc: 'Entrenamiento láctico', minRatio: 1.00, maxRatio: 1.05, color: 'var(--z5-color)' },
+        { key: 'Z6', name: 'VO2 Máx / Neuromuscular', desc: 'Esfuerzo explosivo máximo', minRatio: 1.05, maxRatio: 1.25, color: 'var(--z6-color)' }
+      ]
+    };
+
+    // Al Iniciar la App
+    document.addEventListener("DOMContentLoaded", () => {
+      loadHistoryFromStorage();
+      
+      // Registrar Service Worker para soporte PWA offline
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service Worker registrado con éxito:', reg))
+          .catch(err => console.error('Error al registrar Service Worker:', err));
+      }
+    });
+
+    // Control de Navegación de Pestañas
+    function switchTab(tabName) {
+      // Remover clases activas de los botones de navegación
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      // Desactivar todas las pestañas de contenido
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      // Activar el botón correspondiente
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabName));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Activar el panel correspondiente
+      const targetPanel = document.getElementById(`tab-${tabName}`);
+      if (targetPanel) targetPanel.classList.add('active');
+    }
+
+    // Vincular el resultado del Test Friel directamente a la Calculadora
+    function setThresholdFromTest() {
+      const testVal = parseInt(document.getElementById('test-lthr-input').value);
+      if (!testVal || testVal <= 0) {
+        showToast("⚠️ Ingresa un valor de pulsaciones válido.");
+        return;
+      }
+
+      // Copiar a la calculadora principal
+      document.getElementById('lthr-input').value = testVal;
+      
+      // Cambiar de pestaña
+      switchTab('calc');
+
+      // Ejecutar cálculos
+      updateCalculation();
+      showToast("🚀 Umbral establecido. ¡Zonas calculadas!");
+    }
+
+    // Cambiar dinámicamente el modelo seleccionado
+    function setModelType(type) {
+      currentModelType = type;
+      document.getElementById('btn-model-5').classList.toggle('active', type === '5');
+      document.getElementById('btn-model-6').classList.toggle('active', type === '6');
+      
+      updateCalculation();
+    }
+
+    // Realizar Cálculos
+    function updateCalculation() {
+      const lthr = parseInt(document.getElementById('lthr-input').value);
+      const resultsArea = document.getElementById('results-area');
+
+      if (!lthr || lthr <= 40) {
+        resultsArea.classList.remove('show');
+        return;
+      }
+
+      activeThreshold = lthr;
+      resultsArea.classList.add('show');
+
+      const model = MODELS[currentModelType];
+      calculatedZones = [];
+
+      let tableHTML = "";
+      let barHTML = "";
+
+      model.forEach((zone, idx) => {
+        const minPpm = Math.round(lthr * zone.minRatio);
+        const maxPpm = Math.round(lthr * zone.maxRatio);
+        
+        calculatedZones.push({
+          key: zone.key,
+          name: zone.name,
+          desc: zone.desc,
+          min: minPpm,
+          max: maxPpm,
+          minPct: Math.round(zone.minRatio * 100),
+          maxPct: Math.round(zone.maxRatio * 100),
+          color: zone.color
+        });
+
+        // Formatear texto del rango
+        let rangeText = "";
+        let pctText = "";
+        if (idx === 0) {
+          rangeText = `&lt; ${maxPpm}`;
+          pctText = `&lt; ${zone.maxRatio * 100}%`;
+        } else if (idx === model.length - 1) {
+          rangeText = `&ge; ${minPpm}`;
+          pctText = `&ge; ${zone.minRatio * 100}%`;
+        } else {
+          rangeText = `${minPpm} - ${maxPpm}`;
+          pctText = `${zone.minRatio * 100}% - ${zone.maxRatio * 100}%`;
+        }
+
+        // Construir fila de tabla
+        tableHTML += `
+          <tr>
+            <td style="width: 48px;">
+              <span class="zone-badge zone-${zone.key.toLowerCase()}">${zone.key}</span>
+            </td>
+            <td>
+              <span class="zone-name-col">${zone.name}</span>
+              <span class="zone-desc">${zone.desc}</span>
+            </td>
+            <td>
+              <div class="zone-range">${rangeText} <span style="font-size:10px; font-weight:normal; color:var(--text-secondary)">ppm</span></div>
+              <span class="zone-percentage">${pctText} LTHR</span>
+            </td>
+          </tr>
+        `;
+
+        // Construir barra segmentada
+        const segmentWidth = (zone.maxRatio - zone.minRatio) * 100;
+        barHTML += `
+          <div class="hud-segment" style="width: ${segmentWidth}%; background-color: ${zone.color};" title="${zone.key}: ${rangeText}">
+            ${zone.key}
+          </div>
+        `;
+      });
+
+      document.getElementById('zones-table-body').innerHTML = tableHTML;
+      document.getElementById('hud-bar-chart').innerHTML = barHTML;
+
+      // Calcular Umbrales Fisiológicos
+      // VT1 es el final de Z2
+      const vt1 = Math.round(lthr * 0.85);
+      // VT2 es el propio umbral de lactato
+      const vt2 = lthr;
+
+      document.getElementById('vt1-val').textContent = `${vt1} ppm`;
+      document.getElementById('vt2-val').textContent = `${vt2} ppm`;
+    }
+
+    // Limpiar Calculadora
+    function clearCalculator() {
+      document.getElementById('lthr-input').value = "";
+      document.getElementById('results-area').classList.remove('show');
+      showToast("🧹 Campos restaurados.");
+    }
+
+    // --- SISTEMA DE HISTORIAL LOCAL ---
+    
+    // Abrir Modal de Guardado
+    function openSavePrompt() {
+      if (!activeThreshold) return;
+      
+      const date = new Date();
+      const defaultName = `Test ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+      document.getElementById('save-label-input').value = defaultName;
+      document.getElementById('save-prompt').style.display = "flex";
+    }
+
+    // Cerrar Modal de Guardado
+    function closeSavePrompt() {
+      document.getElementById('save-prompt').style.display = "none";
+    }
+
+    // Guardar en LocalStorage
+    function saveToHistory() {
+      const label = document.getElementById('save-label-input').value.trim() || "Test Zonas";
+      
+      const record = {
+        id: Date.now(),
+        lthr: activeThreshold,
+        modelType: currentModelType,
+        label: label,
+        dateString: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+
+      let history = JSON.parse(localStorage.getItem('zonas_fc_history')) || [];
+      history.unshift(record); // Insertar al inicio
+      localStorage.setItem('zonas_fc_history', JSON.stringify(history));
+
+      closeSavePrompt();
+      loadHistoryFromStorage();
+      showToast("💾 ¡Registro guardado exitosamente!");
+    }
+
+    // Cargar y Renderizar Historial
+    function loadHistoryFromStorage() {
+      const historyContainer = document.getElementById('history-items-container');
+      const history = JSON.parse(localStorage.getItem('zonas_fc_history')) || [];
+
+      if (history.length === 0) {
+        historyContainer.innerHTML = `
+          <div class="history-empty">
+            <span class="icon">📂</span>
+            <p>Aún no tienes mediciones guardadas.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      history.forEach(item => {
+        html += `
+          <div class="history-item">
+            <div class="history-info" onclick="loadHistoryItem(${item.lthr}, '${item.modelType}')" style="cursor: pointer; flex-grow: 1;">
+              <h4>${item.label}</h4>
+              <p>📅 ${item.dateString}</p>
+            </div>
+            <div class="history-meta">
+              <div class="history-val" onclick="loadHistoryItem(${item.lthr}, '${item.modelType}')" style="cursor: pointer;">
+                <span class="history-val-lthr">${item.lthr} <span style="font-size:11px; font-weight:normal;">ppm</span></span><br>
+                <span class="history-val-model">${item.modelType} Zonas</span>
+              </div>
+              <button class="history-btn-del" onclick="deleteHistoryItem(${item.id})" title="Eliminar registro">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      historyContainer.innerHTML = html;
+    }
+
+    // Cargar un item del historial directamente a la calculadora
+    function loadHistoryItem(lthr, modelType) {
+      document.getElementById('lthr-input').value = lthr;
+      setModelType(modelType);
+      switchTab('calc');
+      updateCalculation();
+      showToast("📂 Registro cargado.");
+    }
+
+    // Eliminar un item del historial
+    function deleteHistoryItem(id) {
+      if (!confirm("¿Seguro que deseas eliminar este registro?")) return;
+
+      let history = JSON.parse(localStorage.getItem('zonas_fc_history')) || [];
+      history = history.filter(item => item.id !== id);
+      localStorage.setItem('zonas_fc_history', JSON.stringify(history));
+
+      loadHistoryFromStorage();
+      showToast("🗑️ Registro eliminado.");
+    }
+
+
+    // --- EXPORTAR A IMAGEN (html2canvas) ---
+
+    // Abrir Modal de Captura
+    function openCapturePopup() {
+      if (!activeThreshold) return;
+
+      // Configurar datos visuales en el modal de captura
+      const date = new Date();
+      document.getElementById('cap-name').textContent = `Ficha Zonas (${currentModelType} Zonas)`;
+      document.getElementById('cap-lthr').textContent = `${activeThreshold} ppm`;
+
+      // Renderizar tabla resumida en el modal de captura
+      let capTableHTML = "";
+      let capBarHTML = "";
+
+      calculatedZones.forEach((zone, idx) => {
+        let rangeText = (idx === 0) ? `&lt; ${zone.max}` : ((idx === calculatedZones.length - 1) ? `&ge; ${zone.min}` : `${zone.min} - ${zone.max}`);
+        let pctText = (idx === 0) ? `&lt; ${zone.maxPct}%` : ((idx === calculatedZones.length - 1) ? `&ge; ${zone.minPct}%` : `${zone.minPct}%-${zone.maxPct}%`);
+
+        capTableHTML += `
+          <tr>
+            <td style="width: 32px; padding: 8px;">
+              <span class="zone-badge zone-${zone.key.toLowerCase()}">${zone.key}</span>
+            </td>
+            <td style="padding: 8px; font-weight:600;">
+              ${zone.name}
+            </td>
+            <td style="padding: 8px; font-family:'Outfit'; font-weight:700; text-align:right;">
+              ${rangeText} ppm
+            </td>
+            <td style="padding: 8px; font-size:11px; text-align:right; color:var(--text-secondary);">
+              ${pctText}
+            </td>
+          </tr>
+        `;
+
+        const segmentWidth = (zone.maxPct - zone.minPct);
+        capBarHTML += `
+          <div class="hud-segment" style="width: ${segmentWidth}%; background-color: ${zone.color};">
+            ${zone.key}
+          </div>
+        `;
+      });
+
+      document.getElementById('cap-table-body').innerHTML = capTableHTML;
+      document.getElementById('cap-hud-bar').innerHTML = capBarHTML;
+
+      // Mostrar modal
+      document.getElementById('capture-popup').style.display = "flex";
+    }
+
+    // Cerrar modal de captura
+    function closeCapturePopup() {
+      document.getElementById('capture-popup').style.display = "none";
+    }
+
+    // Descarga física usando html2canvas
+    function downloadImage() {
+      const captureArea = document.getElementById('capture-image-area');
+      showToast("📸 Renderizando imagen...");
+
+      html2canvas(captureArea, {
+        backgroundColor: '#0b0f19',
+        scale: 3, // Mayor escala para imagen ultra nítida
+        useCORS: true,
+        logging: false
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `ZonasFC_PRO_${activeThreshold}ppm.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        
+        closeCapturePopup();
+        showToast("✅ ¡Imagen guardada en descargas!");
+      }).catch(err => {
+        console.error("Error al exportar imagen:", err);
+        showToast("❌ Error al exportar la imagen.");
+      });
+    }
+
+
+    // --- NOTIFICACIÓN FLOTANTE (TOAST) ---
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
